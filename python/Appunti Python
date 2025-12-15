@@ -1,0 +1,4 @@
+L'obbiettivo è di scrivere degli script UTILI per testare la rete che stiamo costruendo.
+i due script saranno:
+---> http_scanner.py che dovrà mandare richieste e ricevere risposte in funzione del server http che cerchiamo di contattare.
+---> .....WORK IN PROGRESS.....
