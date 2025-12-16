@@ -1,4 +1,20 @@
 L'obbiettivo è di scrivere degli script UTILI per testare la rete che stiamo costruendo.
 i due script saranno:
----> http_scanner.py che dovrà mandare richieste e ricevere risposte in funzione del server http che cerchiamo di contattare.
----> .....WORK IN PROGRESS.....
+1) http_scanner si basa sul mandare o richiedere dati per mezzo di verbi (GET,PUT,POST,DELETE) abbiamo creato due diverse versioni:
+
+                http_scanner.py    ---> Questo script Python serve a testare manualmente la comunicazione con un sito web. 
+                                        L'utente inserisce l'indirizzo e il tipo di richiesta (come un tentativo di accesso), e il programma invia i dati al server. 
+                                        Infine, analizza la risposta ricevuta per capire automaticamente se l'operazione ha avuto successo o se è fallita in base alla pagina di destinazione.
+
+                http_scanner_v2.py ---> Questo script è un tool automatizzato progettato per testare la risposta di un server web, concentrandosi specificamente su una pagina di phpMyAdmin.
+                                        Il programma simula il comportamento di un browser reale inviando dati di login e cookie artificiali, e prova in sequenza diversi comandi HTTP (come GET, POST, DELETE).
+                                        Al termine dell'esecuzione, fornisce un riepilogo immediato per mostrare quali metodi sono stati accettati dal server e quali hanno generato errori o reindirizzamenti.
+
+
+
+
+
+
+
+2) port_scanner.py si basa su .....WORK IN PROGRESS.....
+
