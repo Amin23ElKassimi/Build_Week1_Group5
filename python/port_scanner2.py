@@ -1,10 +1,10 @@
 import socket
 from datetime import datetime
 
-def scan_port(target_ip, port, timeout):
+def scan_port(target_ip, port, timeout= 5):
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.settimeout(1)
+        sock.settimeout(timeout)
         result = sock.connect_ex((target_ip, port))
         sock.close()
 
@@ -40,7 +40,7 @@ def port_scan(target, start_port, end_port):
 
     if open_ports:
         print("")
-        
+    
             
     else:
         print("\nNessuna porta aperta trovata")
