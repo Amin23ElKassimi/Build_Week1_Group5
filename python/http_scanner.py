@@ -1,42 +1,7 @@
-# import http.client #Importiamo l'estenzione necessaria per parlare con i server web.
-
-# host = input('Inserire IP: ') #Input in cui inserire IPv4 che intendiamo visitare.
-# port = input('Inserire la porta (default: 80): ') #Input in cui inserire la porta che utilizzeremo per collegarci.
-
-# if port == '': #SE immettiamo un input vuoto allora utilizza in automatico la porta 80
-#      port = 80
-# else:
-#      port = int(port) #ALTRIMENTI utilizza la porta del numero immesso, int() converte la stringa ad intero.
-
-# try:
-#      connection = http.client.HTTPConnection(host, port) #APRE il canale di comunicazione con il server.
-#      connection.request('GET', '/') #Invia la richiesta vera e propria. Il primo valore di request indica il verbo, la seconda indica il path (In questo caso "/" indica la radice ovvero la cartella iniziale, la Home).
-#      response = connection.getresponse() #Il server risponde e noi salviamo quella risposta nella variabile response.
-
-#      body_bytes = response.read() #Assegnamo alla variabile body_bytes la risposta che il server ci da (Risposta grezza, non decodificata)
-#      body_string = body_bytes.decode('utf-8', errors='replace') # Assegnamo alla variabile body_string la versione DECODIFICATA della risposta    utf-8 --> "traduci byte in caratteri leggibili"  errors='replace' --> "se incontri byte intraducibili non darmi errori, rimpiazzali con ?".
-
-#      #print(f'body_bytes è {body_bytes}') #Stampa versione codificata della risposta.
-#      #print(f'body_string è {body_string}') #Stampa la versione decodificata della risposta.
-#      print(f'body_string è {response}')
-
-#      connection.close()
-# except ConnectionRefusedError: #SE qualcosa non va (IP errato, Server spento etc..) allora stampa "Connessione fallita".
-#      print("Connessione fallita")
-
-
-   
-
-
 #   PER MIGLIORARE IL CODICE/ HTTP_Scanner V2.0
 # - Possibilità di assegnare il tipo di richiesta (Verbo) tramite una variabile input; stessa cosa con la directory. (A RIGA 13) / FATTO MA DA VERIFICARE
 # - Migliorare la struttura dello script usando le funzioni e "Main():". / FATTO
 # - Rendiamo il programma continuo (ciclo while) in modo da evitare che alla fine di ogni verifica HTTP il programma si spegne, dobbiamo poterlo spegnere noi digitando "exit" per esempio. / DA DISCUTERE
-
-
-
-
-
 
 import http.client #Importiamo l'estenzione necessaria per parlare con i server web.
 
@@ -50,8 +15,19 @@ def main():
     httprequest(host, port, verb, path)
 
 
+
+
 def initialize():
-    input_host = input('Inserire IP: ') #Input in cui inserire IPv4 che intendiamo visitare.
+    # --- CONTROLLO HOST ---
+    while True:
+        input_host = input('Inserire indirizzo IP: ').strip() # strip() Rimuove eventuali spazi accidentali.
+        if input_host == '':
+            print("Errore: L'IP non può essere vuoto")
+        else:
+            break    
+
+
+    # --- CONTROLLO PORTA ---
     input_port = input('Inserire la porta (default: 80): ') #Input in cui inserire la porta che utilizzeremo per collegarci.
     if input_port == '': #SE immettiamo un input vuoto allora utilizza in automatico la porta 80
         input_port = 80
@@ -64,11 +40,32 @@ def initialize():
                 break
             except:
                 print("Inserisci un numero!") #Lancio un errore.
-                input_port = input('Inserire la porta (default: 80): ')   #Faccio immettere uovamente l'input port e ricomincio il ciclo
+                input_port = input('Inserire la porta (default: 80): ')   #Faccio immettere nuovamente l'input port e ricomincio il ciclo
 
-    input_verb = input('Inserire la tua richiesta (GET, POST, ): ') #Input in cui inserire il verbo di richiesta da utilizzare.
-    input_path = input('Inserire la directory che vuoi analizzare ("/" per la Home): ') #Input in cui inserire il verbo di richiesta da utilizzare.
+
+    # --- CONTROLLO VERB ---
+    valid_verbs = ["GET", "POST", "HEAD", "PUT", "DELETE", "OPTIONS", "PATCH"] # Lista di comandi esistenti  
+    while True:
+        input_verb = input('Inserire la tua richiesta (GET, POST, ): ').strip().upper() # strip() Rimuove eventuali spazi accidentali, upper() mette tutto in maiuscolo.
+
+        if input_verb in valid_verbs: #Se il comando inserito appartiene alla lista valid_verbs[] allora...
+            break# ...esci dal ciclo
+        else:#Altrimenti...
+            print('Il comando che hai inserito non è valido, riprova.')#...printo l'errore e ripeto il ciclo
+
+
+    # --- CONTROLLO PATH ---
+    input_path = input('Inserire la directory che vuoi analizzare (default "/"): ').strip() 
+    if input_path == '': #se non scrivo nulla e premo invio...
+        input_path = '/'#...il path scelto è la Home
+    elif not input_path.startswith("/"): #altrimenti se il path non inizia con una "/"
+        input_path = "/" + input_path # Esempio: se l'utente scrive "file/images" allora diventa in automatico "/file/images"
+
+
     return input_host , input_port , input_verb , input_path
+
+
+
 
 def httprequest(host, port, verb, path):
     
@@ -86,6 +83,9 @@ def httprequest(host, port, verb, path):
         connection.close()
     except ConnectionRefusedError: #SE il server esiste ma per qualche motivo ci rifiuta la connessione allora stampa "Connessione fallita".
         print("Connessione fallita")
+
+
+
 
 def print_team_banner():
     print(r"""
