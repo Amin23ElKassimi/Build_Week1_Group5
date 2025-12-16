@@ -55,6 +55,5 @@ In questa configurazione, un unico firewall gestisce tre interfacce indipendenti
 | **Facilità Configurazione**| ⭐⭐ (Bassa - Routing complesso) | ⭐⭐⭐⭐ (Alta - Centralizzata) |
 | **Resilienza** | Alta (Due livelli di protezione) | Bassa (Punto singolo di fallimento) |
 | **Fedeltà alla Consegna** | Alta (Usa il "secondo firewall") | Media (Interpreta la DMZ logicamente) |
-| **Risorse Richieste** | Alte (2 VM Firewall) | Basse (1 VM Firewall) |
 
 ---
