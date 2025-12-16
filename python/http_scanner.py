@@ -6,16 +6,11 @@
 import http.client #Importiamo l'estenzione necessaria per parlare con i server web.
 
 
-
-
 def main():
     print_team_banner()
     print_tool_banner()
-    host, port, verb, path = initialize()
-    httprequest(host, port, verb, path)
-
-
-
+    host, port, verb, path, body, headers= initialize()
+    httprequest(host, port, verb, path, body, headers)
 
 def initialize():
     # --- CONTROLLO HOST ---
@@ -61,31 +56,58 @@ def initialize():
     elif not input_path.startswith("/"): #altrimenti se il path non inizia con una "/"
         input_path = "/" + input_path # Esempio: se l'utente scrive "file/images" allora diventa in automatico "/file/images"
 
+# --- NUOVO: CONTROLLO BODY E HEADERS (Per POST/PUT) ---
+    input_body = None
+    input_headers = {}
 
-    return input_host , input_port , input_verb , input_path
+    # Se il metodo prevede invio di dati, chiediamo il body
+    if input_verb in ["POST", "PUT", "PATCH"]:
+        print(f"\n[INFO] Hai selezionato {input_verb}. È necessario inviare dei dati.")
+        input_body = input('Inserire il BODY della richiesta: ')
+        
+        # Di default impostiamo un content-type generico se c'è un body.
+        # In un tool avanzato potresti chiedere anche il Content-Type (json, html, ecc.)
+        input_headers = {"Content-type": "application/x-www-form-urlencoded"} #"Content-type": application/x-www-form-urlencoded è il formato standard dei moduli.
 
 
+    return input_host , input_port , input_verb , input_path, input_body, input_headers
 
-
-def httprequest(host, port, verb, path):
+def httprequest(host, port, verb, path, body, headers):
     
     try:
         connection = http.client.HTTPConnection(host, port) #APRE il canale di comunicazione con il server.
-        connection.request(verb, path) #Invia la richiesta vera e propria. Il primo valore di request indica il verbo, la seconda indica il path (In questo caso "/" indica la radice ovvero la cartella iniziale, la Home).
+        connection.request(verb, path, body=body, headers=headers) #Invia la richiesta vera e propria. Il primo valore di request indica il verbo, la seconda indica il path (In questo caso "/" indica la radice ovvero la cartella iniziale, la Home).
+        
         response = connection.getresponse() #Il server risponde e noi salviamo quella risposta nella variabile response.
 
-        body_bytes = response.read() #Assegnamo alla variabile body_bytes la risposta che il server ci da (Risposta grezza, non decodificata)
-        body_string = body_bytes.decode('utf-8', errors='replace') # Assegnamo alla variabile body_string la versione DECODIFICATA della risposta    utf-8 --> "traduci byte in caratteri leggibili"  errors='replace' --> "se incontri byte intraducibili non darmi errori, rimpiazzali con ?".
+        
+        print(f"\n--- RISPOSTA SERVER ---")
+        print(f"Status: {response.status} {response.reason}")
 
-        #print(f'body_bytes è {body_bytes}') #Stampa versione codificata della risposta.
-        print(f'body_string è {body_string}') #Stampa la versione decodificata della risposta.
+        # --- LOGICA DI CONTROLLO LOGIN ---
+        # Cerchiamo l'header "Location"
+        location_header = None
+        for k, v in response.getheaders():
+            print(f"  {k}: {v}") # Stampiamo tutto per debug
+            if k == 'Location':
+                location_header = v
+        
+        print("-----------------------")
+
+        # LOGICA DI SUCCESSO/FALLIMENTO SPECIFICA PER DVWA
+        if response.status == 302 and location_header:
+            if "login.php" in location_header:
+                print("\n[!] RISULTATO: LOGIN FALLITO (Reindirizzato al login)")
+            elif "index.php" in location_header:
+                print("\n[***] RISULTATO: LOGIN RIUSCITO! (Reindirizzato alla home)")
+            else:
+                print(f"\n[?] RISULTATO: Redirect sconosciuto verso {location_header}")
+        
 
         connection.close()
-    except ConnectionRefusedError: #SE il server esiste ma per qualche motivo ci rifiuta la connessione allora stampa "Connessione fallita".
+        
+    except ConnectionRefusedError:
         print("Connessione fallita")
-
-
-
 
 def print_team_banner():
     print(r"""
