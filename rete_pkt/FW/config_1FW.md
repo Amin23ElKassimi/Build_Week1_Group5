@@ -171,5 +171,3 @@ Clicca **Add**:
     * Vai sulla console di Meta2.
     * Digita `ping 192.168.11.100` (IP di Kali).
     * -> **NON DEVE funzionare** (Bloccato dalla Regola 1 della DMZ).
-
-Hai configurato con successo una rete sicura con DMZ usando un solo firewall!
