@@ -19,7 +19,7 @@ def initialize():
         if input_host == '':
             print("Errore: L'IP non può essere vuoto")
         else:
-            break    
+            break
 
 
     # --- CONTROLLO PORTA ---
@@ -39,7 +39,7 @@ def initialize():
 
 
     # --- CONTROLLO VERB ---
-    valid_verbs = ["GET", "POST", "HEAD", "PUT", "DELETE", "OPTIONS", "PATCH"] # Lista di comandi esistenti  
+    valid_verbs = ["GET", "POST", "HEAD", "PUT", "DELETE", "OPTIONS", "PATCH"] # Lista di comandi esistenti
     while True:
         input_verb = input('Inserire la tua richiesta (GET, POST, ): ').strip().upper() # strip() Rimuove eventuali spazi accidentali, upper() mette tutto in maiuscolo.
 
@@ -50,7 +50,7 @@ def initialize():
 
 
     # --- CONTROLLO PATH ---
-    input_path = input('Inserire la directory che vuoi analizzare (default "/"): ').strip() 
+    input_path = input('Inserire la directory che vuoi analizzare (default "/"): ').strip()
     if input_path == '': #se non scrivo nulla e premo invio...
         input_path = '/'#...il path scelto è la Home
     elif not input_path.startswith("/"): #altrimenti se il path non inizia con una "/"
@@ -64,7 +64,7 @@ def initialize():
     if input_verb in ["POST", "PUT", "PATCH"]:
         print(f"\n[INFO] Hai selezionato {input_verb}. È necessario inviare dei dati.")
         input_body = input('Inserire il BODY della richiesta: ')
-        
+
         # Di default impostiamo un content-type generico se c'è un body.
         # In un tool avanzato potresti chiedere anche il Content-Type (json, html, ecc.)
         input_headers = {"Content-type": "application/x-www-form-urlencoded"} #"Content-type": application/x-www-form-urlencoded è il formato standard dei moduli.
@@ -73,14 +73,14 @@ def initialize():
     return input_host , input_port , input_verb , input_path, input_body, input_headers
 
 def httprequest(host, port, verb, path, body, headers):
-    
+
     try:
         connection = http.client.HTTPConnection(host, port) #APRE il canale di comunicazione con il server.
         connection.request(verb, path, body=body, headers=headers) #Invia la richiesta vera e propria. Il primo valore di request indica il verbo, la seconda indica il path (In questo caso "/" indica la radice ovvero la cartella iniziale, la Home).
-        
+
         response = connection.getresponse() #Il server risponde e noi salviamo quella risposta nella variabile response.
 
-        
+
         print(f"\n--- RISPOSTA SERVER ---")
         print(f"Status: {response.status} {response.reason}")
 
@@ -91,7 +91,7 @@ def httprequest(host, port, verb, path, body, headers):
             print(f"  {k}: {v}") # Stampiamo tutto per debug
             if k == 'Location':
                 location_header = v
-        
+
         print("-----------------------")
 
         # LOGICA DI SUCCESSO/FALLIMENTO SPECIFICA PER DVWA
@@ -102,35 +102,31 @@ def httprequest(host, port, verb, path, body, headers):
                 print("\n[***] RISULTATO: LOGIN RIUSCITO! (Reindirizzato alla home)")
             else:
                 print(f"\n[?] RISULTATO: Redirect sconosciuto verso {location_header}")
-        
+
 
         connection.close()
-        
+
     except ConnectionRefusedError:
         print("Connessione fallita")
 
 def print_team_banner():
     print(r"""
-      ____                        _   ___    ____  _                                 _ _ 
+      ____                        _   ___    ____  _                                 _ _
      / ___| _ __   ___  __ _ _ __(_) ( _ )  |  _ \(_) __ _  ___ ___ ___ _ __   __| (_)
      \___ \| '_ \ / _ \/ _` | '_ \ | / _ \/\| |_) | |/ _` |/ __/ __/ _ \ '_ \ / _` | |
       ___) | |_) |  __/ (_| | | | | | (_>  <|  _ <| | (_| | (_| (__  __/ | | | (_| | |
      |____/| .__/ \___|\__, |_| |_|_|\___/\/|_| \_\_|\__,_|\___\___\___|_| |_|\__,_|_|
-           |_|         |___/                                                          
+           |_|         |___/
     """)
 
 def print_tool_banner():
     print(r"""
-     _   _ _____ _____ ____  ____                                  
-    | | | |_   _|_   _|  _ \/ ___|                                 
-    | |_| | | |   | | | |_) \___ \  ___ __ _ _ __  _ __   ___ _ __ 
+     _   _ _____ _____ ____  ____
+    | | | |_   _|_   _|  _ \/ ___|
+    | |_| | | |   | | | |_) \___ \  ___ __ _ _ __  _ __   ___ _ __
     |  _  | | |   | | |  __/ ___) |/ __/ _` | '_ \| '_ \ / _ \ '__|
-    |_| |_| |_|   |_| |_|   |____/ \___\__,_|_| |_|_| |_|\___|_|   
-    """)           
-
-
-
+    |_| |_| |_|   |_| |_|   |____/ \___\__,_|_| |_|_| |_|\___|_|
+    """)
 
 if __name__ == "__main__":
-    main()     
-
+    main()
