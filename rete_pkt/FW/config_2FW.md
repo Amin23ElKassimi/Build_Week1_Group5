@@ -1,6 +1,7 @@
 # Configurazione Doppio Firewall
 **Obiettivo:** Costruire un'architettura di rete sicura con due firewall (pfSense) in cascata.
 **Scopo:** Isolare il Web Server (Meta2) in una DMZ e proteggere la rete di Theta (Kali) in una rete interna separata.
+**Testato?** Sì 
 
 ---
 
