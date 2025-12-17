@@ -1,9 +1,10 @@
 import socket
-import subprocess  # <--- Necessario per eseguire il ping
+import subprocess  
 import sys
 from datetime import datetime
 
-def check_host_up(ip): #Facciamo ping della macchina bersaglio per capire se è raggiungibile o meno.
+# ---PING MACCHINA BERSAGLIO ---
+def check_host_up(ip): 
     """
     Invia un singolo pacchetto PING all'IP target.
     Ritorna True se risponde, False se non risponde.
@@ -19,7 +20,8 @@ def check_host_up(ip): #Facciamo ping della macchina bersaglio per capire se è 
     except Exception:
         return False # Se il ping NON ha avuto successo (fa un return False)
 
-def scan_port(target_ip, port, timeout=0.3): # Timeout basso per velocità
+# ---TEMPO PER LO SCAN DI OGNI PORTA---
+def scan_time(target_ip, port, timeout=0.3): 
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(timeout)
@@ -31,9 +33,10 @@ def scan_port(target_ip, port, timeout=0.3): # Timeout basso per velocità
         else:
             return False
     except socket.error:
+        print('Connessione interrotta!')
         return False
 
-
+# ---SCAN E OUTPUT SU TERMINALE---
 def port_scan(target, start_port, end_port):
     try:
         target_ip = socket.gethostbyname(target)
@@ -63,7 +66,7 @@ def port_scan(target, start_port, end_port):
             # Opzionale: stampa un puntino per far vedere che sta lavorando
             # print(".", end="", flush=True) 
             
-            if scan_port(target_ip, port):
+            if scan_time(target_ip, port):
                 # \n serve per andare a capo se stavi stampando i puntini
                 print(f"\n[+] Porta {port} APERTA")
                 open_ports.append(port)
