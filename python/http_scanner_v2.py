@@ -1,7 +1,7 @@
 import http.client  # Importo il modulo necessario per far parlare il mio script con i server web.
 import urllib.parse  # Importo gli strumenti per codificare i dati nel formato corretto per gli URL.
 
-def test_phpmyadmin(host, port=80, path="/phpMyAdmin/themes/original/img/logo_right.png"):  # Creo la mia funzione di test: decido io l'indirizzo IP.
+def test_phpmyadmin(host, port, path):  # Creo la mia funzione di test: decido io l'indirizzo IP.
     print(f"[*] Avvio test su: {host}:{port}{path}\n")  # Scrivo a video quale indirizzo sto per analizzare.
 
     body_data = {  # Preparo il pacchetto di dati per simulare un tentativo di accesso (login).
@@ -95,10 +95,17 @@ def print_tool_banner():
 if __name__ == "__main__": 
     print_team_banner()  
     print_tool_banner()  
-    while True:  # Faccio partire un ciclo infinito per non far chiudere il programma subito.
+    
+    while True:  
         print('\n\n   --->Digita exit per uscire <---\n')  
-        host = input('Inserisci l\'IPv4 che vuoi analizzare: ')  # Chiedo all'utente quale indirizzo IP vuole colpire.
-        if host == 'exit':  # Se l'utente scrive 'exit'...
-            break  # ...esco dal ciclo e spengo tutto.
+        host = input('Inserisci l\'IPv4 che vuoi analizzare: ')
+        if host == 'exit': 
+            break  
+        port = input('Inserisci la porta che vuoi analizzare: ')
+        if port == 'exit': 
+            break 
+        path = input('Inserisci la Directory: ')
+        if path == 'exit':  
+            break 
         else:  
-            test_phpmyadmin(host)  # Altrimenti, lancio la mia funzione di test sull'indirizzo scelto.
+            test_phpmyadmin(host, port, path)  # Altrimenti, lancio la mia funzione di test sull'indirizzo scelto.
