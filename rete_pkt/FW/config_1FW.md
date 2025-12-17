@@ -1,5 +1,6 @@
 # Configurazione con un Singolo Firewall
 **Obiettivo:** Creare un'architettura di rete sicura centralizzata su un unico firewall pfSense che gestisce tre zone: Internet (WAN), Zona Demilitarizzata (DMZ) e Rete Interna (LAN).
+**Testato?** Non ancora ma è simile al progetto fatto in classe.
 
 ---
 
