@@ -1,10 +1,10 @@
 import socket
-import subprocess  
+import subprocess
 import sys
 from datetime import datetime
 
 # ---PING MACCHINA BERSAGLIO ---
-def check_host_up(ip): 
+def check_host_up(ip):
     """
     Invia un singolo pacchetto PING all'IP target.
     Ritorna True se risponde, False se non risponde.
@@ -15,13 +15,13 @@ def check_host_up(ip):
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL # stdout/stderr=DEVNULL serve a nascondere l'output del ping nel terminale.
         )
-        
+
         return output.returncode == 0 # Se il codice di ritorno è 0, il ping ha avuto successo (fa un return True)
     except Exception:
         return False # Se il ping NON ha avuto successo (fa un return False)
 
 # ---TEMPO PER LO SCAN DI OGNI PORTA---
-def scan_time(target_ip, port, timeout=0.3): 
+def scan_time(target_ip, port, timeout=0.3):
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.settimeout(timeout)
@@ -46,8 +46,8 @@ def port_scan(target, start_port, end_port):
 
     # --- NUOVO BLOCCO: CONTROLLO HOST ---
     print(f"\n[*] Verifica stato host {target_ip} in corso...")
-    
-    if not check_host_up(target_ip):
+
+    if  check_host_up(target_ip):
         print(f"[!] Host {target_ip} non raggiungibile (sembra spento o blocca i ping).")
         print("[!] Scansione annullata.")
         return
@@ -57,15 +57,15 @@ def port_scan(target, start_port, end_port):
 
     print(f"[*] Scansione porte {start_port}–{end_port}")
     print("[*] Ora di inizio:", datetime.now())
-    
+
 
     open_ports = []
 
     try:
         for port in range(start_port, end_port + 1):
             # Opzionale: stampa un puntino per far vedere che sta lavorando
-            # print(".", end="", flush=True) 
-            
+            # print(".", end="", flush=True)
+
             if scan_time(target_ip, port):
                 # \n serve per andare a capo se stavi stampando i puntini
                 print(f"\n[+] Porta {port} APERTA")
@@ -88,7 +88,7 @@ if __name__ == "__main__":
         target_host = input("Inserisci IP o hostname: ")
         start = int(input("Porta iniziale: "))
         end = int(input("Porta finale: "))
-        
+
         port_scan(target_host, start, end)
     except ValueError:
         print("Errore: Le porte devono essere numeri interi.")
