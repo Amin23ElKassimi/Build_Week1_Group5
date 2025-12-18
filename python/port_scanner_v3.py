@@ -47,7 +47,7 @@ def port_scan(target, start_port, end_port):
     # --- NUOVO BLOCCO: CONTROLLO HOST ---
     print(f"\n[*] Verifica stato host {target_ip} in corso...")
 
-    if  check_host_up(target_ip):
+    if  not check_host_up(target_ip):
         print(f"[!] Host {target_ip} non raggiungibile (sembra spento o blocca i ping).")
         print("[!] Scansione annullata.")
         return
