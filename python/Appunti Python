@@ -8,5 +8,19 @@ I tre programmi saranno:
  Infine genera un file .txt con all'interno un riepilogo che mostra i risultati della nostra scansione.
 
 
-2) port_scanner_v3.py è un programma python che permette una 
+2) Un port scanner è uno strumento utilizzato per analizzare le porte di rete di un host al fine di individuare quali servizi siano attivi e raggiungibili.
+Ogni dispositivo connesso a una rete utilizza porte numerate per gestire le comunicazioni dei diversi servizi.
+Attraverso il port scanning è possibile determinare se una porta è aperta, chiusa o filtrata da un firewall.
+Una porta aperta indica la presenza di un servizio in ascolto, mentre una porta chiusa segnala l’assenza di tale servizio.
+Le porte filtrate non forniscono risposta a causa di sistemi di sicurezza intermedi.
+Il port scanning è una tecnica fondamentale nel campo della cybersecurity.
+Viene utilizzata sia in ambito difensivo per valutare la superficie di attacco, sia in ambito offensivo durante la fase di ricognizione. Nel nostro programma di Port scanning scritto in python, abbiamo cercato di ottimizzare il codice per agevolare l’eventuale utilizzo in futuro di tecnici per controlli e verifiche.
+ La funzione check_host_up() invia un ping all’host per verificare se è raggiungibile prima di avviare la scansione.
+Questo passaggio evita di perdere tempo a scansionare un host spento o irraggiungibile.
+La funzione scan_time() tenta una connessione TCP a una porta specifica per capire se è aperta, in un tempo definito, se dovesse impiegare di più l’operazione viene interrotta.
+Se la connessione va a buon fine, la porta viene considerata attiva.
+La funzione port_scan() risolve l’hostname in IP e coordina l’intera scansione.
+Le porte aperte vengono memorizzate e mostrate all’utente in tempo reale.
+Il programma gestisce errori e interruzioni manuali in modo sicuro.
+ 
 
